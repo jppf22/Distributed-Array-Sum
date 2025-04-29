@@ -15,7 +15,7 @@
 
 - The array of N integers is initially available at the coordinator node OR is sent by a client through an API *(extra feature to be developed further along, may or may not be developed. If it is, this documentation will be updated to reflect choice)*.
 - The system will consist of multiple nodes (physical computers or VMs).
-- Each node will have a gRPC server running to handle incoming messages.
+- Each node will have a gRPC server running to handle incoming messages, and a client to send them.
 - Communication between nodes will be done over gRPC.
 - Each member must implement using different operating systems and different programming languages (both must support gRPC).
 - In case of a coordinator node failure, a leader election process will trigger over gRPC.
@@ -48,6 +48,12 @@
       - Old coordinator may be re-added as worker when healthy.
 
 ## Class diagram
+
+![Simple Class Diagram](System_Architecture_Class_Diagram.drawio.png)
+
+At the very beginning every node is of type `Node`, until the first election is concluded.
+
+Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if they "exchange" roles.
 
 ## Behavioral diagrams
 
