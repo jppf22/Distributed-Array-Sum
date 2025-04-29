@@ -13,7 +13,7 @@
 
 ## Assumptions
 
-- The array of N integers is initially available at the coordinator node OR is sent by a client through an API (extra feature to be developed further along).
+- The array of N integers is initially available at the coordinator node OR is sent by a client through an API *(extra feature to be developed further along, may or may not be developed. If it is, this documentation will be updated to reflect choice)*.
 - The system will consist of multiple nodes (physical computers or VMs).
 - Each node will have a gRPC server running to handle incoming messages.
 - Communication between nodes will be done over gRPC.
@@ -26,6 +26,7 @@
 - Coordinator node:
   - Splits the array into chunks.
   - Calls worker nodes’ gRPC services to send chunks.
+    - Chunk arrays sent as bytes instead of repeated fields for higher performance.
   - Collects partial sums via gRPC responses.
   - Computes and displays final sum.
   - Detects failures through gRPC connection errors.
@@ -33,8 +34,18 @@
   - Expose gRPC service endpoints to:
     - Receive array chunks.
     - Compute and return partial sums.
+      - Each worker returns sum to coordinator as a single integer.
   - Participate in leader election (if needed) through gRPC communication.
     - Chosen election algorithm is the *Bully Algorithm*
+- Distributed System setup:
+  - Worker nodes register themselves at the coordinator
+  - Coordinator will distribute tasks based on the number of succesfully registered nodes (if a node fails to register, it is ignored).
+  - Both the coordinador and worker nodes regularly check health of each other
+    - If a worker node fails the check, the coordinator excludes it from task assignment and optionally redistributes its task
+      - If detected to be healthy again, re-added.
+    - If the coordinator node fails the check, a leader election is triggered among the workers to elect a new coordinator
+      - The new coordinator resumes array sum calculation with its own calculated value and by receiving worker status, after notfying new coordinator.
+      - Old coordinator may be re-added as worker when healthy.
 
 ## Class diagram
 
@@ -49,6 +60,8 @@
 ### State Diagram of a node
 
 ## Test plan
+
+**Disclaimer:** Some of these tests may assume certain nodes to be running on certain endpoints
 
 ### Unit Tests
 
