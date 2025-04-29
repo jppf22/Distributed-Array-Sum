@@ -65,6 +65,8 @@ Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if the
 
 ### Sequence Diagram of Worker Failure
 
+![Worker failure mid operation](System_Architecture-Sequence_Diagram_Worker_Failure.drawio.png)
+
 ### Sequence Diagram of Coordinator Failure
 
 ### State Diagram of a node
@@ -74,8 +76,6 @@ Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if the
 **Disclaimer:** Some of these tests may assume certain nodes to be running on certain endpoints
 
 ### Unit Tests
-
-### Integration Tests
 
 ### End-to-End Tests
 
