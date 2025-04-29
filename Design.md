@@ -57,7 +57,11 @@ Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if the
 
 ## Behavioral diagrams
 
+### Sequence Diagram of Node Setup
+
 ### Sequence Diagram of System Normal Operation
+
+![Normal Operation](System_Architecture-Sequence_Diagram_Normal_Functioning.drawio.png)
 
 ### Sequence Diagram of Worker Failure
 
