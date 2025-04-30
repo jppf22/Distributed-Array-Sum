@@ -55,6 +55,8 @@ At the very beginning every node is of type `Node`, until the first election is 
 
 Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if they "exchange" roles.
 
+**Note:** `HeartBeat` is sent periodically, whilst `NodeHealth` is checked or issued upon request.
+
 ## Behavioral diagrams
 
 ### Sequence Diagram of Node Setup
@@ -77,12 +79,51 @@ No need for additional step of notfying coordinator is down, since once a node d
 
 ## Test plan
 
-**Disclaimer:** Some of these tests may assume certain nodes to be running on certain endpoints
+**Disclaimer:** Some of these tests may assume certain nodes to be running on certain endpoints.
+
+**Outcomes:** Varied implementation of tests and resulting outcomes can be done, therefore outcomes haven't been neatly specified, only test intention.
 
 ### Unit Tests
 
+Test individual node level functionality without networking.
+
+|Test|Description
+|-------|-----------------|
+|Split Array|Check correct splitting of array according to reigstered nodes|
+|ComputeSum|Check correct partial sum computation|
+|HeartBeatSending|Verify heartbeat signal and frequency|
+|HealthCheckSending|Verify correct Health Check info|
+|ChunkAssignment|Test correctly chunk delivery|
+|Result Aggregation and Display|Test Correct Final Sum Result based on partial sums received|
+
 ### End-to-End Tests
+
+Run real nodes connected via gRPC, and test valid interaction between nodes.
+
+|Test|Description|
+|-------|--------|
+|Initial Election|System startup with no pre-assinged Coordinator|
+|Worker registration|Check worker nodes correctly register themselves and the Coordinator has a correct registration list|
+|Full Sum|Perform the normal system operation and check results |
+|Multiple (3+) Nodes|Use 3 or more nodes in system|
+|Start Node Mid-Program|Start a new node mid active program (should trigger Election)|
 
 ### Load Tests
 
+Evaluate performance with larger data and more nodes.
+
+|Test|Description|
+|-------|--------|
+|Large Array|Test System functionality and correct result when working with a large array|
+|Many Nodes (via containers)|Run system with 10+ workers (using containers)|
+
 ### Recovery Tests
+
+Simulate node and network failures, and tests according resilience.
+
+|Test|Description|
+|-------|--------|
+|Worker Crash|Check what happens when a worker is killed mid-task, Coordinator should correctly reassign task|
+|Coordinator Crash|Check what happens when a Coordinator is killed mid-task, election should be triggered and computation resumed and sent to new Coordinator|
+|Worker Network Loss|Same as Crash, but with connectivity loss|
+|Coordinator Network Loss|Same as Crash, but with connectivity loss|
