@@ -49,7 +49,7 @@
 
 ## Class diagram
 
-![Simple Class Diagram](System_Architecture_Class_Diagram.drawio.png)
+![Simple Class Diagram](System_Architecture-Class_Diagram.drawio.png)
 
 At the very beginning every node is of type `Node`, until the first election is concluded.
 
