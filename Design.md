@@ -44,8 +44,8 @@
     - If a worker node fails the check, the coordinator excludes it from task assignment and optionally redistributes its task
       - If detected to be healthy again, re-added.
     - If the coordinator node fails the check, a leader election is triggered among the workers to elect a new coordinator
-      - The new coordinator resumes array sum calculation with its own calculated value and by receiving worker status, after notfying new coordinator.
-      - Old coordinator may be re-added as worker when healthy.
+      - The new coordinator resumes array sum calculation with its own calculated value and by receiving workers status, after notfying them of its promotion.
+      - Old coordinator may be re-added as worker when healthy or start election and become coordinator again.
 
 ## Class diagram
 
@@ -59,6 +59,8 @@ Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if the
 
 ### Sequence Diagram of Node Setup
 
+![Nodes inital Setup](System_Architecture-Sequence_Diagram_Node_Setup.drawio.png)
+
 ### Sequence Diagram of System Normal Operation
 
 ![Normal Operation](System_Architecture-Sequence_Diagram_Normal_Functioning.drawio.png)
@@ -69,7 +71,9 @@ Onwards, at any moment, only `Worker` and `Coordinator` nodes exist, even if the
 
 ### Sequence Diagram of Coordinator Failure
 
-### State Diagram of a node
+![Coordinator failure mid operation](System_Architecture-Sequence_Diagram_Coordinator_Failure.drawio.png)
+
+No need for additional step of notfying coordinator is down, since once a node detects or starts an election, any computed subarray sum is only sent after new coordinator is decided.
 
 ## Test plan
 
